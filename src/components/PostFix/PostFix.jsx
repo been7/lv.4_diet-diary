@@ -3,7 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { queryClient, useMutation, useQuery } from "react-query";
 import { fixDiet } from "../../api/diets";
 import { getDiets } from "../../api/diets";
-import shortid from "shortid";
+import useInput from "../../hooks/useInput";
+import CurrentTime from "../CurrentTime/CurrentTime";
+import { styled } from "styled-components";
+import ButtonContainer from "../common/Button";
 
 function PostFix() {
   const { data } = useQuery("diets", getDiets);
@@ -12,20 +15,35 @@ function PostFix() {
     return item.id == params.id;
   });
 
-  const [writer, setWriter] = useState(filteredDiet.writer);
-  const [title, setTitle] = useState(filteredDiet.title);
-  const [contents, setContents] = useState(filteredDiet.contents);
-  const [file, setFile] = useState();
+  const [writer, handleWriter] = useInput(filteredDiet.writer);
+  const [title, handleTitle] = useInput(filteredDiet.title);
+  const [contents, handleContents] = useInput(filteredDiet.contents);
+  const [selectedFile, setSelectedFile] = useState();
+  const [imgUrl, setImgUrl] = useState(filteredDiet.imgUrl);
+  const testRef = useRef();
 
   const navigate = useNavigate();
-
-  const fileInput = useRef(null);
 
   const mutation = useMutation(fixDiet, {
     onSuccess: () => {
       queryClient.invalidateQueries("diets");
     },
   });
+
+  const fileOnLoad = (e) => {
+    setSelectedFile(e.target.files[0]);
+    console.log(e.target.files[0]);
+    saveImgFile();
+  };
+
+  const saveImgFile = () => {
+    const file = testRef.current.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImgUrl(reader.result);
+    };
+  };
 
   const handlePatchButtonClick = (e) => {
     e.preventDefault();
@@ -38,61 +56,94 @@ function PostFix() {
       writer,
       title,
       contents,
-      file,
+      imgUrl,
       id: filteredDiet.id,
+      date: CurrentTime(),
     };
 
     mutation.mutate(newDiet);
 
-    navigate("/list");
-  };
-
-  const handleChange = (e) => {
-    fileInput.current.click();
-    console.log(e.target.files[0]);
+    window.location.replace("/list");
   };
 
   return (
-    <div>
+    <Container>
       <form onSubmit={handlePatchButtonClick}>
         <p>작성자</p>
-        <input
-          type="text"
-          value={writer}
-          onChange={(e) => {
-            setWriter(e.target.value);
-          }}
-        />
+        <WriterTitleInput type="text" value={writer} onChange={handleWriter} />
         <p>제목</p>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
+        <WriterTitleInput type="text" value={title} onChange={handleTitle} />
         <p>내용</p>
-        <input
-          type="text"
-          value={contents}
-          onChange={(e) => {
-            setContents(e.target.value);
-          }}
-        />
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          ref={fileInput}
-          onChange={handleChange}
-          value={file || ""}
-          onChangeCapture={(e) => {
-            setFile(e.target.value);
-          }}
-        />
-        <button type="submit">수정하기</button>
+        <ContentsInput type="text" value={contents} onChange={handleContents} />
+        <ButtonBox>
+          <FileSelect htmlFor="fileImg">파일 선택</FileSelect>
+          <FileInput
+            type="file"
+            name="img"
+            id="fileImg"
+            accept="image/png, image/jpeg"
+            onChange={fileOnLoad}
+            ref={testRef}
+          />
+          <ButtonContainer
+            type="submit"
+            bc="#A0C49D"
+            color="white"
+            size="small"
+          >
+            수정하기
+          </ButtonContainer>
+        </ButtonBox>
       </form>
-    </div>
+    </Container>
   );
 }
 
 export default PostFix;
+
+const Container = styled.div`
+  padding-left: 300px;
+  padding-right: 300px;
+  margin-top: 30px;
+`;
+
+const WriterTitleInput = styled.input`
+  width: 300px;
+  height: 30px;
+  font-size: 23px;
+`;
+
+const ContentsInput = styled.textarea`
+  width: 600px;
+  height: 200px;
+  font-size: 23px;
+`;
+
+const ButtonBox = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+`;
+
+const FileSelect = styled.label`
+  display: flex;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #a0c49d;
+  color: white;
+  height: 40px;
+  width: 100px;
+  font-size: 20px;
+  margin-top: 5px;
+  justify-content: space-around;
+  align-items: center;
+  &:hover {
+    font-size: 14px;
+    font-weight: bold;
+  }
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;

@@ -1,11 +1,17 @@
 import React from "react";
 import { styled } from "styled-components";
+import home from "../../assets/home.png";
+import back from "../../assets/back.png";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
   return (
     <HeaderLayout>
-      <h3>Home아이콘</h3>
-      <h3>식단일기</h3>
+      <Img src={back} onClick={() => navigate(-1)} />
+      <h1>식단일기</h1>
+      <Img src={home} onClick={() => navigate("/")} />
     </HeaderLayout>
   );
 }
@@ -13,14 +19,21 @@ function Header() {
 export default Header;
 
 const HeaderLayout = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
+  margin-bottom: 50px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: 80px;
-  background-color: #fff;
+  background-color: #a0c49d;
   box-shadow: rgba(120, 120, 120, 0.2) 0px 2px 8px 0px;
+`;
+
+const Img = styled.img`
+  height: 60px;
+  margin-left: 20px;
+  margin-right: 20px;
+  &:hover {
+    cursor: pointer;
+  }
 `;

@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addDiet } from "../../api/diets";
 import shortid from "shortid";
 import { getDiets } from "../../api/diets";
+import useInput from "../../hooks/useInput";
+import { styled } from "styled-components";
+import CurrentTime from "../CurrentTime/CurrentTime";
+import ButtonContainer from "../common/Button";
 
 function PostWrite() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const fileInput = useRef(null);
 
   const { data } = useQuery("diets", getDiets);
 
@@ -18,97 +20,144 @@ function PostWrite() {
   const mutation = useMutation(addDiet, {
     onSuccess: () => {
       queryClient.invalidateQueries("diets");
-      console.log("성공!");
     },
   });
 
-  // const diets = useSelector((state) => state.diets);
-  // console.log("diets", diets);
-
-  const [writer, setWriter] = useState("");
-  const [title, setTitle] = useState("");
-  const [contents, setContents] = useState("");
-  const [file, setFile] = useState();
-
-  // const formData = new FormData();
-
-  // Object.entries(data).forEach(([key, value]) => {
-  //   if (value.type === "file") {
-  //     // value: {type: string, value: File}
-  //     formData.append(key, value.value);
-  //   }
-  // });
+  const [writer, handleWriter] = useInput("");
+  const [title, handleTitle] = useInput("");
+  const [contents, handleContents] = useInput("");
+  const [selectedFile, setSelectedFile] = useState();
+  const [imgUrl, setImgUrl] = useState("");
+  const testRef = useRef();
 
   const handleSubmitButtonClick = (e) => {
     e.preventDefault();
-
-    if (!writer || !title || !contents) {
-      return alert("작성자, 제목, 내용을 입력하세요.");
-    }
 
     const newDiet = {
       writer,
       title,
       contents,
       id: shortid.generate(),
-      file,
+      imgUrl,
+      date: CurrentTime(),
     };
 
     mutation.mutate(newDiet);
 
-    navigate("/list");
+    window.location.replace("/list");
   };
 
-  // const handleWriteButtonClick = () => {
-  //   fileInput.current.click();
-  // };
+  const fileOnLoad = (e) => {
+    setSelectedFile(e.target.files[0]);
+    saveImgFile();
+  };
 
-  const handleChange = (e) => {
-    fileInput.current.click();
-    console.log(e.target.files[0]);
+  const saveImgFile = () => {
+    const file = testRef.current.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImgUrl(reader.result);
+    };
   };
 
   return (
-    <div>
+    <Container>
       <form onSubmit={handleSubmitButtonClick}>
-        <p>작성자</p>
-        <input
-          type="text"
-          value={writer}
-          onChange={(e) => {
-            setWriter(e.target.value);
-          }}
-        />
-        <p>제목</p>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-        <p>내용</p>
-        <input
-          type="text"
-          value={contents}
-          onChange={(e) => {
-            setContents(e.target.value);
-          }}
-        />
-        <input
-          type="file"
-          accept="image/png, image/jpeg"
-          ref={fileInput}
-          onChange={handleChange}
-          value={file}
-          onChangeCapture={(e) => {
-            setFile(e.target.value);
-          }}
-        />
-        <button type="submit">작성하기</button>
+        <div>
+          <p>작성자</p>
+          <WriterTitleInput
+            type="text"
+            value={writer}
+            onChange={handleWriter}
+            required
+          />
+          <p>제목</p>
+          <WriterTitleInput
+            type="text"
+            value={title}
+            onChange={handleTitle}
+            required
+          />
+          <p>내용</p>
+          <ContentsInput
+            type="text"
+            value={contents}
+            onChange={handleContents}
+            required
+            minLength="10"
+          />
+        </div>
+        <ButtonBox>
+          <FileSelect htmlFor="fileImg">파일 선택</FileSelect>
+          <FileInput
+            type="file"
+            name="img"
+            id="fileImg"
+            accept="image/png, image/jpeg"
+            onChange={fileOnLoad}
+            ref={testRef}
+          />
+          <ButtonContainer
+            type="submit"
+            bc="#A0C49D"
+            color="white"
+            size="small"
+          >
+            작성하기
+          </ButtonContainer>
+        </ButtonBox>
       </form>
-    </div>
+    </Container>
   );
 }
 
 export default PostWrite;
+
+const Container = styled.div`
+  padding-left: 300px;
+  padding-right: 300px;
+  margin-top: 30px;
+`;
+
+const WriterTitleInput = styled.input`
+  width: 300px;
+  height: 30px;
+  font-size: 23px;
+`;
+
+const ContentsInput = styled.textarea`
+  width: 600px;
+  height: 250px;
+  font-size: 23px;
+  min-leng
+`;
+
+const FileSelect = styled.label`
+  display: flex;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  background-color: #a0c49d;
+  color: white;
+  height: 40px;
+  width: 100px;
+  font-size: 20px;
+  margin-top: 5px;
+  justify-content: space-around;
+  align-items: center;
+  &:hover {
+    font-size: 14px;
+    font-weight: bold;
+  }
+`;
+
+const FileInput = styled.input`
+  display: none;
+`;
+
+const ButtonBox = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+`;

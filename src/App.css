@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Gaegu&display=swap");
+
+body {
+  font-size: 30px;
+
+  background-image: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.5),
+      rgba(252, 247, 247, 0.5)
+    ),
+    url("https://images.unsplash.com/photo-1606636661692-255650f47ec9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80");
+  background-position: center;
+  background-size: cover;
+}
+
+* {
+  font-family: "Gaegu", cursive;
+}
