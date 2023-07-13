@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { delDiet, getDiets } from "../../api/diets";
-import { useQuery, useMutation, queryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { styled } from "styled-components";
 import ButtonContainer from "../common/Button";
 import noImage from "../../assets/noImage.jpg";
@@ -10,9 +10,22 @@ import Modal from "../common/Modal";
 function Diet() {
   const params = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoading, isError, data } = useQuery("diets", getDiets);
+  const { isLoading, isError, data } = useQuery(["diets"], getDiets);
+
+  // 리액트 쿼리 삭제
+  const {
+    mutate,
+    mutateAsync,
+    isLoading: loadingMutation,
+  } = useMutation(delDiet, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["diets"]);
+      navigate("/list");
+    },
+  });
 
   // 삭제버튼 클릭했을 때 모달 오픈
   const openModal = () => {
@@ -20,10 +33,9 @@ function Diet() {
   };
 
   // 모달창에서 삭제버튼 눌렀을 때 글 삭제
-  const closeModal = () => {
+  const closeModal = async () => {
     setIsOpen(false);
-    deleteMutation.mutate(filteredDiet.id);
-    window.location.replace("/list");
+    mutate(filteredDiet.id);
   };
 
   // 모달창에서 취소버튼 눌렀을 때
@@ -31,12 +43,11 @@ function Diet() {
     setIsOpen(false);
   };
 
-  // 리액트 쿼리 삭제
-  const deleteMutation = useMutation(delDiet, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("diets");
-    },
-  });
+  console.log("loadingMutation", loadingMutation);
+
+  if (loadingMutation) {
+    return <p>삭제중</p>;
+  }
 
   if (isLoading) {
     return <p>로딩중입니다.....!</p>;

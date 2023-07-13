@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { queryClient, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { fixDiet } from "../../api/diets";
 import { getDiets } from "../../api/diets";
 import useInput from "../../hooks/useInput";
 import CurrentTime from "../CurrentTime/CurrentTime";
 import { styled } from "styled-components";
 import ButtonContainer from "../common/Button";
+import { useQueryClient } from "react-query";
 
 function PostFix() {
   const { data } = useQuery("diets", getDiets);
   const params = useParams();
+  const queryClient = useQueryClient();
   const filteredDiet = data.find((item) => {
     return item.id == params.id;
   });
