@@ -24,7 +24,9 @@ function PostFix() {
   const [imgUrl, setImgUrl] = useState(filteredDiet.imgUrl);
   const testRef = useRef();
 
-  const mutation = useMutation(fixDiet, {
+  // mutation 실행될때 true
+  // onSuccess 끝나면 false
+  const { isLoading, mutateAsync } = useMutation(fixDiet, {
     onSuccess: async () => {
       await queryClient.invalidateQueries("diets");
       window.location.replace("/list");
@@ -59,8 +61,10 @@ function PostFix() {
       date: CurrentTime(),
     };
 
-    await mutation.mutateAsync(newDiet);
+    await mutateAsync(newDiet);
   };
+
+  if (isLoading) return <p>수정중</p>;
 
   return (
     <Container>
