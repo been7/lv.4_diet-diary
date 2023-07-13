@@ -25,8 +25,8 @@ function PostFix() {
   const testRef = useRef();
 
   const mutation = useMutation(fixDiet, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("diets");
+    onSuccess: async () => {
+      await queryClient.invalidateQueries("diets");
     },
   });
 

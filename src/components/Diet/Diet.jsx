@@ -21,8 +21,8 @@ function Diet() {
     mutateAsync,
     isLoading: loadingMutation,
   } = useMutation(delDiet, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["diets"]);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(["diets"]);
       navigate("/list");
     },
   });
