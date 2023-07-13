@@ -6,6 +6,7 @@ import { styled } from "styled-components";
 import ButtonContainer from "../common/Button";
 import noImage from "../../assets/noImage.jpg";
 import Modal from "../common/Modal";
+import loading from "../../assets/loading.gif";
 
 function Diet() {
   const params = useParams();
@@ -45,12 +46,8 @@ function Diet() {
 
   console.log("loadingMutation", loadingMutation);
 
-  if (loadingMutation) {
-    return <p>삭제중</p>;
-  }
-
-  if (isLoading) {
-    return <p>로딩중입니다.....!</p>;
+  if (loadingMutation || isLoading) {
+    return <LoadingImg src={loading} />;
   }
 
   if (isError) {
@@ -137,4 +134,11 @@ const ButtonBox = styled.div`
   margin-top: 50px;
   margin-left: 300px;
   margin-right: 300px;
+`;
+
+const LoadingImg = styled.img`
+  height: 500px;
+  width: 500px;
+  margin-left: 350px;
+  margin-top: 100px;
 `;

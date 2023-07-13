@@ -8,6 +8,7 @@ import CurrentTime from "../CurrentTime/CurrentTime";
 import { styled } from "styled-components";
 import ButtonContainer from "../common/Button";
 import { useQueryClient } from "react-query";
+import loading from "../../assets/loading.gif";
 
 function PostFix() {
   const { data } = useQuery("diets", getDiets);
@@ -64,7 +65,7 @@ function PostFix() {
     await mutateAsync(newDiet);
   };
 
-  if (isLoading) return <p>수정중</p>;
+  if (isLoading) return <LoadingImg src={loading} />;
 
   return (
     <Container>
@@ -161,4 +162,11 @@ const FileSelect = styled.label`
 
 const FileInput = styled.input`
   display: none;
+`;
+
+const LoadingImg = styled.img`
+  height: 500px;
+  width: 500px;
+  margin-left: 350px;
+  margin-top: 100px;
 `;

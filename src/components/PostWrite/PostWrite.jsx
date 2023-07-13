@@ -6,6 +6,7 @@ import useInput from "../../hooks/useInput";
 import { styled } from "styled-components";
 import CurrentTime from "../CurrentTime/CurrentTime";
 import ButtonContainer from "../common/Button";
+import loading from "../../assets/loading.gif";
 
 function PostWrite() {
   const queryClient = useQueryClient();
@@ -52,6 +53,8 @@ function PostWrite() {
       setImgUrl(reader.result);
     };
   };
+
+  if (mutation.isLoading) return <LoadingImg src={loading} />;
 
   return (
     <Container>
@@ -151,4 +154,11 @@ const ButtonBox = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: space-evenly;
+`;
+
+const LoadingImg = styled.img`
+  height: 500px;
+  width: 500px;
+  margin-left: 350px;
+  margin-top: 100px;
 `;
