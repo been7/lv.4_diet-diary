@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { queryClient, useMutation, useQuery } from "react-query";
 import { fixDiet } from "../../api/diets";
 import { getDiets } from "../../api/diets";
@@ -22,8 +22,6 @@ function PostFix() {
   const [imgUrl, setImgUrl] = useState(filteredDiet.imgUrl);
   const testRef = useRef();
 
-  const navigate = useNavigate();
-
   const mutation = useMutation(fixDiet, {
     onSuccess: () => {
       queryClient.invalidateQueries("diets");
@@ -45,12 +43,9 @@ function PostFix() {
     };
   };
 
+  // 폼 수정 버튼 클릭 시
   const handlePatchButtonClick = (e) => {
     e.preventDefault();
-
-    if (!title || !contents) {
-      return alert("작성자, 제목, 내용을 입력하세요.");
-    }
 
     const newDiet = {
       writer,
@@ -70,11 +65,26 @@ function PostFix() {
     <Container>
       <form onSubmit={handlePatchButtonClick}>
         <p>작성자</p>
-        <WriterTitleInput type="text" value={writer} onChange={handleWriter} />
+        <WriterTitleInput
+          type="text"
+          value={writer}
+          onChange={handleWriter}
+          required
+        />
         <p>제목</p>
-        <WriterTitleInput type="text" value={title} onChange={handleTitle} />
+        <WriterTitleInput
+          type="text"
+          value={title}
+          onChange={handleTitle}
+          required
+        />
         <p>내용</p>
-        <ContentsInput type="text" value={contents} onChange={handleContents} />
+        <ContentsInput
+          type="text"
+          value={contents}
+          onChange={handleContents}
+          required
+        />
         <ButtonBox>
           <FileSelect htmlFor="fileImg">파일 선택</FileSelect>
           <FileInput

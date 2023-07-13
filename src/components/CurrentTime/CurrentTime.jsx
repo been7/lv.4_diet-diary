@@ -1,3 +1,4 @@
+// 현재 날짜, 시간
 const CurrentTime = function () {
   let today = new Date();
   let year = today.getFullYear();

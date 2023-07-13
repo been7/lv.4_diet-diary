@@ -8,14 +8,14 @@ function Home() {
 
   return (
     <Container>
-      <Box onClick={() => navigate("/write")}>
+      <MainBox onClick={() => navigate("/write")}>
         <h2>일기 쓰기</h2>
         <Img src={arrow} />
-      </Box>
-      <Box onClick={() => navigate("/list")}>
+      </MainBox>
+      <MainBox onClick={() => navigate("/list")}>
         <h2>일기 모음</h2>
         <Img src={arrow} />
-      </Box>
+      </MainBox>
     </Container>
   );
 }
@@ -32,7 +32,7 @@ const Img = styled.img`
   height: 50px;
 `;
 
-const Box = styled.div`
+const MainBox = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: #f7ffe5;

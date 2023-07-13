@@ -1,21 +1,13 @@
 import React, { useRef, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "react-query";
 import { addDiet } from "../../api/diets";
 import shortid from "shortid";
-import { getDiets } from "../../api/diets";
 import useInput from "../../hooks/useInput";
 import { styled } from "styled-components";
 import CurrentTime from "../CurrentTime/CurrentTime";
 import ButtonContainer from "../common/Button";
 
 function PostWrite() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { data } = useQuery("diets", getDiets);
-
   const queryClient = useQueryClient();
   const mutation = useMutation(addDiet, {
     onSuccess: () => {
@@ -30,6 +22,7 @@ function PostWrite() {
   const [imgUrl, setImgUrl] = useState("");
   const testRef = useRef();
 
+  // 폼 작성 버튼 클릭 시
   const handleSubmitButtonClick = (e) => {
     e.preventDefault();
 
@@ -130,7 +123,6 @@ const ContentsInput = styled.textarea`
   width: 600px;
   height: 250px;
   font-size: 23px;
-  min-leng
 `;
 
 const FileSelect = styled.label`

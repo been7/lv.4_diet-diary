@@ -9,24 +9,29 @@ import Modal from "../common/Modal";
 
 function Diet() {
   const params = useParams();
-  const { isLoading, isError, data } = useQuery("diets", getDiets);
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const { isLoading, isError, data } = useQuery("diets", getDiets);
+
+  // 삭제버튼 클릭했을 때 모달 오픈
   const openModal = () => {
     setIsOpen(true);
   };
 
+  // 모달창에서 삭제버튼 눌렀을 때 글 삭제
   const closeModal = () => {
     setIsOpen(false);
     deleteMutation.mutate(filteredDiet.id);
     window.location.replace("/list");
   };
 
+  // 모달창에서 취소버튼 눌렀을 때
   const cancelButton = () => {
     setIsOpen(false);
   };
 
+  // 리액트 쿼리 삭제
   const deleteMutation = useMutation(delDiet, {
     onSuccess: () => {
       queryClient.invalidateQueries("diets");
@@ -44,11 +49,6 @@ function Diet() {
   const filteredDiet = data.find((item) => {
     return item.id == params.id;
   });
-
-  const handleDeleteButtonClick = () => {
-    deleteMutation.mutate(filteredDiet.id);
-    window.location.replace("/list");
-  };
 
   return (
     <Container>
@@ -126,24 +126,4 @@ const ButtonBox = styled.div`
   margin-top: 50px;
   margin-left: 300px;
   margin-right: 300px;
-`;
-
-const StModalBox = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const StModalContents = styled.div`
-  background-color: #fff;
-  padding: 20px;
-  width: 30%;
-  height: 25%;
-  border-radius: 12px;
 `;
