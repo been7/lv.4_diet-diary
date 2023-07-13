@@ -27,6 +27,7 @@ function PostFix() {
   const mutation = useMutation(fixDiet, {
     onSuccess: async () => {
       await queryClient.invalidateQueries("diets");
+      window.location.replace("/list");
     },
   });
 
@@ -46,7 +47,7 @@ function PostFix() {
   };
 
   // 폼 수정 버튼 클릭 시
-  const handlePatchButtonClick = (e) => {
+  const handlePatchButtonClick = async (e) => {
     e.preventDefault();
 
     const newDiet = {
@@ -58,9 +59,7 @@ function PostFix() {
       date: CurrentTime(),
     };
 
-    mutation.mutate(newDiet);
-
-    window.location.replace("/list");
+    await mutation.mutateAsync(newDiet);
   };
 
   return (
