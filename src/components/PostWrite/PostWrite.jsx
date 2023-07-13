@@ -10,8 +10,9 @@ import ButtonContainer from "../common/Button";
 function PostWrite() {
   const queryClient = useQueryClient();
   const mutation = useMutation(addDiet, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("diets");
+    onSuccess: async () => {
+      await queryClient.invalidateQueries("diets");
+      window.location.replace("/list");
     },
   });
 
@@ -36,8 +37,6 @@ function PostWrite() {
     };
 
     mutation.mutate(newDiet);
-
-    window.location.replace("/list");
   };
 
   const fileOnLoad = (e) => {
