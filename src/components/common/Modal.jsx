@@ -3,24 +3,26 @@ import { styled } from "styled-components";
 import ButtonContainer from "./Button";
 
 function Modal(props) {
+  const { name, handleFixButton, closeModal, cancelButton, children } = props;
+
   return (
     <>
       <StModalBox>
         <StModalContents>
-          <p>삭제하시겠습니까?</p>
+          <p>{children}</p>
           <ButtonContainer
             bc="#A0C49D"
             color="white"
             size="small"
-            onClick={props.closeModal}
+            onClick={name == "delBtn" ? closeModal : handleFixButton}
           >
-            삭제
+            확인
           </ButtonContainer>
           <ButtonContainer
             bc="#A0C49D"
             color="white"
             size="small"
-            onClick={props.cancelButton}
+            onClick={cancelButton}
           >
             취소
           </ButtonContainer>

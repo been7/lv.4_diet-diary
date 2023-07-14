@@ -36,7 +36,6 @@ function PostFix() {
 
   const fileOnLoad = (e) => {
     setSelectedFile(e.target.files[0]);
-    console.log(e.target.files[0]);
     saveImgFile();
   };
 

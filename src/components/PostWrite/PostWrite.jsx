@@ -18,6 +18,7 @@ function PostWrite() {
   });
 
   const [writer, handleWriter] = useInput("");
+  const [password, handlePassword] = useInput("");
   const [title, handleTitle] = useInput("");
   const [contents, handleContents] = useInput("");
   const [selectedFile, setSelectedFile] = useState();
@@ -30,6 +31,7 @@ function PostWrite() {
 
     const newDiet = {
       writer,
+      password,
       title,
       contents,
       id: shortid.generate(),
@@ -60,20 +62,34 @@ function PostWrite() {
     <Container>
       <form onSubmit={handleSubmitButtonClick}>
         <div>
-          <p>작성자</p>
-          <WriterTitleInput
-            type="text"
-            value={writer}
-            onChange={handleWriter}
-            required
-          />
+          <WriterPwBox>
+            <div>
+              <p>작성자</p>
+              <WriterPwInput
+                type="text"
+                value={writer}
+                onChange={handleWriter}
+                required
+              />
+            </div>
+            <div>
+              <p>비밀번호</p>
+              <WriterPwInput
+                type="password"
+                value={password}
+                onChange={handlePassword}
+                required
+              />
+            </div>
+          </WriterPwBox>
           <p>제목</p>
-          <WriterTitleInput
+          <TitleInput
             type="text"
             value={title}
             onChange={handleTitle}
             required
           />
+
           <p>내용</p>
           <ContentsInput
             type="text"
@@ -115,8 +131,19 @@ const Container = styled.div`
   margin-top: 30px;
 `;
 
-const WriterTitleInput = styled.input`
-  width: 300px;
+const WriterPwBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const WriterPwInput = styled.input`
+  width: 250px;
+  height: 30px;
+  font-size: 23px;
+`;
+
+const TitleInput = styled.input`
+  width: 600px;
   height: 30px;
   font-size: 23px;
 `;
