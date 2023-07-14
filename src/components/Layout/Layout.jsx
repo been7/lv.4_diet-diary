@@ -21,6 +21,6 @@ const Container = styled.div`
   }
 
   @media (min-width: 1200px) {
-    width: 1170px;
+    width: 1200px;
   }
 `;
