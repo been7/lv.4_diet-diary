@@ -11,6 +11,7 @@ function DietList() {
 
   const navigate = useNavigate();
 
+  // 상태 메세지
   if (isLoading) {
     return <LoadingImg src={loading} />;
   }

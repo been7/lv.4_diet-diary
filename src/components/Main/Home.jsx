@@ -8,10 +8,12 @@ function Home() {
 
   return (
     <Container>
+      {/* 작성 페이지로 이동 */}
       <MainBox onClick={() => navigate("/write")}>
         <h2>일기 쓰기</h2>
         <Img src={arrow} />
       </MainBox>
+      {/* 목록 페이지로 이동 */}
       <MainBox onClick={() => navigate("/list")}>
         <h2>일기 모음</h2>
         <Img src={arrow} />

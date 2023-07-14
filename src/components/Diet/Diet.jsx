@@ -24,24 +24,35 @@ function Diet() {
   });
 
   // 리액트 쿼리 삭제
-  const {
-    mutate,
-    mutateAsync,
-    isLoading: loadingMutation,
-  } = useMutation(delDiet, {
+  const { mutate, isLoading: loadingMutation } = useMutation(delDiet, {
     onSuccess: async () => {
       await queryClient.invalidateQueries(["diets"]);
       navigate("/list");
     },
   });
 
-  // 버튼 클릭했을 때 모달 오픈
-  const openModal = () => {
-    setIsOpen(true);
+  // 수정, 삭제 버튼 클릭 시 모달 오픈
+  const openModal = (message) => {
+    switch (message) {
+      case "fixBtn":
+        setIsFixOpen(true);
+        break;
+      case "delBtn":
+        setIsOpen(true);
+        break;
+    }
   };
 
-  const openFixModal = () => {
-    setIsFixOpen(true);
+  // 모달창에서 취소 버튼 클릭 시 모달창 닫기
+  const cancelModal = (message) => {
+    switch (message) {
+      case "fixBtn":
+        setIsFixOpen(false);
+        break;
+      case "delBtn":
+        setIsOpen(false);
+        break;
+    }
   };
 
   // 모달창에서 삭제버튼 눌렀을 때 글 삭제
@@ -54,6 +65,7 @@ function Diet() {
     }
   };
 
+  // 수정 버튼 클릭 시
   const handleFixButton = () => {
     if (confirmPw == filteredDiet.password) {
       setIsFixOpen(false);
@@ -61,11 +73,6 @@ function Diet() {
     } else if (confirmPw != filteredDiet.password) {
       return alert("비밀번호를 다시 입력하세요.");
     }
-  };
-
-  // 모달창에서 취소버튼 눌렀을 때
-  const cancelButton = () => {
-    setIsOpen(false);
   };
 
   if (loadingMutation || isLoading) {
@@ -90,8 +97,7 @@ function Diet() {
             bc="#A0C49D"
             color="white"
             size="small"
-            // name="fixBtn"
-            onClick={openFixModal}
+            onClick={() => openModal("fixBtn")}
           >
             수정
           </ButtonContainer>
@@ -99,11 +105,11 @@ function Diet() {
             <Modal
               name="fixBtn"
               handleFixButton={handleFixButton}
-              cancelButton={cancelButton}
+              cancelButton={() => cancelModal("fixBtn")}
             >
               수정하려면 비밀번호를 입력하세요.
               <br />
-              <input
+              <PwInput
                 type="password"
                 value={confirmPw}
                 onChange={handleConfirmPw}
@@ -114,8 +120,7 @@ function Diet() {
             bc="#A0C49D"
             color="white"
             size="small"
-            // name="delBtn"
-            onClick={openModal}
+            onClick={() => openModal("delBtn")}
           >
             삭제
           </ButtonContainer>
@@ -123,11 +128,11 @@ function Diet() {
             <Modal
               name="delBtn"
               closeModal={closeModal}
-              cancelButton={cancelButton}
+              cancelButton={() => cancelModal("delBtn")}
             >
               삭제하려면 비밀번호를 입력하세요.
               <br />
-              <input
+              <PwInput
                 type="password"
                 value={confirmPw}
                 onChange={handleConfirmPw}
@@ -163,6 +168,12 @@ const Writer = styled.p`
 
 const Title = styled.p`
   font-size: xx-large;
+`;
+
+const PwInput = styled.input`
+  width: 250px;
+  height: 30px;
+  font-size: 23px;
 `;
 
 const Img = styled.img`
