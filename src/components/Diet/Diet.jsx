@@ -190,8 +190,8 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: space-around;
   margin-top: 50px;
-  margin-left: 300px;
-  margin-right: 300px;
+  margin-left: 30px;
+  margin-right: 30px;
 `;
 
 const LoadingImg = styled.img`

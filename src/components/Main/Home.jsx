@@ -25,8 +25,8 @@ function Home() {
 export default Home;
 
 const Container = styled.main`
-  padding-left: 300px;
-  padding-right: 300px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin-top: 50px;
 `;
 
