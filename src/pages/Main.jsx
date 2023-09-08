@@ -6,7 +6,7 @@ import Home from "../components/Main/Home";
 function Main() {
   return (
     <>
-      <title>식단일기</title>
+      <title>식단일기 | Lv.4</title>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="theme-color" content="#000000" />
