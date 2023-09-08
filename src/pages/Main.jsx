@@ -14,18 +14,18 @@ function Main() {
         name="description"
         content="Web site created using create-react-app"
       />
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content="https://lv-4-diet-diary.vercel.app/" />
-      <meta property="og:title" content="Lv.4" />
+      <meta name="type" content="website" />
+      <meta name="url" content="https://lv-4-diet-diary.vercel.app/" />
+      <meta name="title" content="Lv.4" />
       <meta
-        property="og:image"
-        content="https://qqmpajgfevwczsrkmsyu.supabase.co/storage/v1/object/public/countryImgs/Hong%20Kong.jpg?t=2023-09-08T12%3A18%3A05.237Z"
+        name="image"
+        content="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2021&q=80"
       />
-      <meta property="og:description" content="테스트용 설명..." />
-      <meta property="og:site_name" content="Lv.4 과제" />
-      <meta property="og:locale" content="en_US" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
+      <meta name="og:description" content="테스트용 설명..." />
+      <meta name="og:site_name" content="Lv.4 과제" />
+      <meta name="og:locale" content="en_US" />
+      <meta name="og:image:width" content="1200" />
+      <meta name="og:image:height" content="630" />
       <Header />
       <Layout>
         <Home />
