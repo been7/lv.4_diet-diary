@@ -8,6 +8,7 @@ function List() {
   return (
     <>
       <Helmet>
+        <title>로그인</title>
         <meta property="type" content="website" />
         <meta property="url" content="https://lv-4-diet-diary.vercel.app/" />
         <meta property="title" content="Lv.4 목록이다" />
